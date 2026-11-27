@@ -14,7 +14,10 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: CI,
   retries: CI ? 1 : 0, // one retry for browser flakiness; a retried pass is reported as flaky (14-test §7)
-  reporter: CI ? [["github"], ["html", { open: "never" }]] : "list",
+  // CI: "list" streams one line per test so a hang is visible in the job log.
+  reporter: CI ? [["list"], ["github"], ["html", { open: "never" }]] : "list",
+  timeout: 30_000,
+  expect: { timeout: 5_000 },
   use: { baseURL, trace: "retain-on-failure", screenshot: "only-on-failure", ...shared },
   projects: [
     { name: "mobile", use: { ...devices["Pixel 7"], ...shared }, testIgnore: /ekran-goruntusu/ },
