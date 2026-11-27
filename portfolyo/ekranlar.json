@@ -1,0 +1,7 @@
+{
+  "$comment": "Plan §21'deki ekran listesi. dosya: {sıra}-{ekran}-{cihaz}; cihaz: masaustu | mobil | tablet. tamSayfa: true ise ayrıca '-tam' sonekli tam sayfa görüntüsü alınır. hazirla: çekimden önce adımlar — { doldur, metin } · { tikla } · { bekle } (Playwright seçicileri; yerel <dialog> için dialog[open]). Yollar dilimler ilerledikçe /tr ve /en altına taşınır.",
+  "ekranlar": [
+    { "dosya": "01-ana-sayfa-masaustu", "yol": "/", "cihaz": "masaustu", "tamSayfa": true },
+    { "dosya": "02-ana-sayfa-mobil", "yol": "/", "cihaz": "mobil" }
+  ]
+}

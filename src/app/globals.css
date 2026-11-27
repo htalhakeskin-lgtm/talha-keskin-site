@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/*
+ * "Şartname kâğıdı" (PLAN.md §11). One dominant colour (ink) + neutrals; the signal orange
+ * accent stays under 10% of any screen (GK-05). No dark mode (§11.7). No shadows: separation
+ * comes from 1px lines (§11.4).
+ */
+:root {
+  --background: #f5f3ee; /* paper */
+  --foreground: #15171c; /* ink */
+  --muted-foreground: #5b5f68;
+  --primary: #15171c;
+  --primary-foreground: #f5f3ee;
+  --accent: #b93d0b; /* signal orange: links, active filter, mono numbers */
+  --accent-foreground: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #ece9e2;
+  --border: #d6d2c8;
+  --border-strong: #80858e; /* where a 3:1 boundary is required (GK-15) */
+  --grid-line: #e4e0d7;
+  --ink-section: #15171c;
+  --on-ink: #f5f3ee;
+  --on-ink-muted: #b4b7bf;
+
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-device: 12px;
+
+  --section-gap: 72px;
+  --header-height: 64px;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --section-gap: 128px;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-grid-line: var(--grid-line);
+  --color-ink: var(--ink-section);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-device: var(--radius-device);
+
+  /* Type scale (px): 12 / 14 / 16 / 18 / 20 / 24 / 32 / 40 / 56 / 72 — §11.3 */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.5rem;
+  --text-6xl: 4.5rem;
+
+  --spacing-section: var(--section-gap);
+  --container-text: 42.5rem; /* 680px */
+  --container-content: 75rem; /* 1200px */
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-padding-top: calc(var(--header-height) + 16px);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+}
+
+@layer utilities {
+  /* Mono eyebrow: "01 · HİKÂYE" (§11.3). Uppercase via CSS only (KURALLAR D). */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Faint 8px spec-sheet grid: hero and the preview desk only (§11.4). */
+  .spec-grid {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
+
+body:has(#ana-menu:popover-open) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

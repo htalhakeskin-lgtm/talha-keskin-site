@@ -1,0 +1,33 @@
+# Supply-chain protections (15-git-ve-ci §6). Single-package repo: no `packages` list needed.
+
+# Do not install versions published less than 3 days ago (minutes). Pin the newest version
+# older than 3 days instead, or add a dated, justified minimumReleaseAgeExclude entry.
+minimumReleaseAge: 4320
+# minimumReleaseAgeExclude:
+#   - some-package   # urgent security fix — PR link and date
+
+# Install scripts are blocked unless allowed (pnpm 12 `allowBuilds`; the skeleton's
+# `ignoredBuiltDependencies` is the pnpm ≤ 10 spelling). These work without their scripts:
+allowBuilds:
+  sharp: false # prebuilt binaries ship as optional dependencies
+  unrs-resolver: false # same
+  esbuild: false # platform binary ships as an optional dependency
+  lefthook: false # hooks are installed by the "prepare" script instead
+
+# Patched transitive versions for dev-only tooling (@lhci/cli 0.15.1 → lighthouse → puppeteer).
+# 2026-11-27: @lhci/cli 0.16.1 cannot install (its devtools-protocol pin is not on the registry).
+# Remove when @lhci/cli ships these versions itself.
+overrides:
+  tmp: ">=0.2.6"
+  uuid: ">=11.1.1"
+  basic-ftp: ">=6.2.4"
+  zod: ">=4.6.6"
+
+# No patched extract-zip exists (2026-11-27). It is reached only through dev-only
+# @lhci/cli → lighthouse → puppeteer-core → @puppeteer/browsers, which unzips downloaded browser
+# builds; Lighthouse CI here uses the installed Chrome and never downloads one. Not shipped to
+# the site. Review again 2027-01-31 or when @lhci/cli installs cleanly at a newer version.
+auditConfig:
+  ignoreGhsas:
+    - GHSA-jmr9-qjv8-65gv
+    - GHSA-7pqw-9j4j-h8q3
