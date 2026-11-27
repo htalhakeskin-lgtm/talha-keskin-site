@@ -14,7 +14,10 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: CI,
   retries: CI ? 1 : 0, // one retry for browser flakiness; a retried pass is reported as flaky (14-test §7)
-  reporter: CI ? [["github"], ["html", { open: "never" }]] : "list",
+  // CI: "list" streams one line per test so a hang is visible in the job log.
+  reporter: CI ? [["list"], ["github"], ["html", { open: "never" }]] : "list",
+  timeout: 30_000,
+  expect: { timeout: 5_000 },
   use: { baseURL, trace: "retain-on-failure", screenshot: "only-on-failure", ...shared },
   projects: [
     { name: "mobile", use: { ...devices["Pixel 7"], ...shared }, testIgnore: /ekran-goruntusu/ },
@@ -29,7 +32,10 @@ export default defineConfig({
     { name: "portfolyo", testMatch: /ekran-goruntusu\.spec\.ts/, use: { ...shared } },
   ],
   webServer: {
-    command: CI ? `pnpm start --port ${port}` : `pnpm dev --port ${port}`,
+    // Start Next directly, not through pnpm: pnpm 12 does not forward the stop signal, so on CI the
+    // server outlived the tests and the job hung until its timeout.
+    command: `node node_modules/next/dist/bin/next ${CI ? "start" : "dev"} --port ${port}`,
+    gracefulShutdown: { signal: "SIGTERM", timeout: 5_000 },
     url: baseURL,
     reuseExistingServer: !CI,
     timeout: 120_000,

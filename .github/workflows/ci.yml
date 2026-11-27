@@ -48,6 +48,7 @@ jobs:
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium ${{ github.event_name == 'schedule' && 'webkit' || '' }}
       - run: pnpm exec playwright test --project=mobile --project=desktop ${{ github.event_name == 'schedule' && '--project=iphone' || '' }}
+        timeout-minutes: 12
       # Lighthouse CI on the same build (12-performans §8): performance warns, a11y / best practices fail.
       - run: pnpm lighthouse
       - uses: actions/upload-artifact@v4
