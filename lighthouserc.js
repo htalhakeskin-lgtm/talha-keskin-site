@@ -14,7 +14,8 @@ const paths = ["/", "/stil"];
 module.exports = {
   ci: {
     collect: {
-      startServerCommand: `pnpm start --port ${port}`,
+      // Direct node call: pnpm 12 does not forward the stop signal to the Next server.
+      startServerCommand: `node node_modules/next/dist/bin/next start --port ${port}`,
       startServerReadyPattern: "Ready in",
       url: paths.map((p) => base + p),
       numberOfRuns: 1,

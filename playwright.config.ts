@@ -32,7 +32,10 @@ export default defineConfig({
     { name: "portfolyo", testMatch: /ekran-goruntusu\.spec\.ts/, use: { ...shared } },
   ],
   webServer: {
-    command: CI ? `pnpm start --port ${port}` : `pnpm dev --port ${port}`,
+    // Start Next directly, not through pnpm: pnpm 12 does not forward the stop signal, so on CI the
+    // server outlived the tests and the job hung until its timeout.
+    command: `node node_modules/next/dist/bin/next ${CI ? "start" : "dev"} --port ${port}`,
+    gracefulShutdown: { signal: "SIGTERM", timeout: 5_000 },
     url: baseURL,
     reuseExistingServer: !CI,
     timeout: 120_000,
