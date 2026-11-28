@@ -2,18 +2,18 @@
 
 | Alan | Bilgi |
 |---|---|
-| Belge sürümü | v0.3 |
+| Belge sürümü | v0.4 |
 | Tarih | 2026-11-27 |
-| Durum | Onaylandı · Geliştiriliyor (Faz 3 tamam) |
+| Durum | Onaylandı · Geliştiriliyor · Yayında (kabuk) |
 | Kapsam seviyesi | S2 ([§2](#2-kapsam-seviyesi)) |
 | Hesap modeli | A, hesapsız ([§8](#8-hesap-ve-yetki-modeli)) |
 | Teknoloji varyantı | V1, veritabanısız statik çıktı ([§10](#10-teknoloji-ve-mimari-kararlar)) |
 | Ortam | Gerçek (geliştiricinin kendi sitesi, gerçek içerik) |
-| Yayın | Vercel, `https://<ad-soyad>.vercel.app`; ileride özel alan adına taşınacak (tek değişken, [§5.5](#55-portfolyo-adresi-ve-önizleme-izinleri)) |
+| Yayın | Vercel, `https://talha-keskin.vercel.app`; ileride özel alan adına taşınacak (tek değişken, [§5.5](#55-portfolyo-adresi-ve-önizleme-izinleri)) |
 | Kaynak kod | GitHub `htalhakeskin-lgtm`, açık depo (V-08) |
 | Sistem sürümü | web-proje 1.2.0 |
 
-> **Güncel durum:** Plan onaylandı (2026-11-27, `/web-proje kur`). Faz 3 kurulumu bitti: iskelet, tasarım token'ları, kabuk, `/stil`, CI ve testler yerelde yeşil. Sıradaki dilim D-02 (çok dilli altyapı). Başlık ayarı kontrol listesi: [docs/onizleme-izinleri.md](docs/onizleme-izinleri.md). Proje görseli klasör kuralı: [docs/proje-gorselleri.md](docs/proje-gorselleri.md).
+> **Güncel durum:** Faz 3 tamam ve yayında: https://talha-keskin.vercel.app (kabuk). GitHub CI yeşil, `main` korumalı. Önizleme izinleri 7 projede birleşti, 6'sı canlıda (Golden Börek sunucu yayını bekliyor). Sıradaki dilim D-02 (çok dilli altyapı). Başlık ayarı kontrol listesi: [docs/onizleme-izinleri.md](docs/onizleme-izinleri.md). Proje görseli klasör kuralı: [docs/proje-gorselleri.md](docs/proje-gorselleri.md).
 >
 > **Konum notu (K-01):** Kullanıcı planı `PLAN.md` adıyla istedi. Bu dosya planın tek doğru kaynağıdır. `docs/proje-plani.md` yalnızca buraya yönlendirir.
 
@@ -78,7 +78,7 @@ Ayrıntı: [docs/arastirma.md](docs/arastirma.md)
 | V-04 | İngilizce metinleri ilk taslak olarak ben çeviririm, Talha gözden geçirir. | İçerik yalnızca Türkçe mevcut | Veri dosyası |
 | V-05 | CV PDF'leri sitenin veri dosyasından üretilir (yazdırma sayfası + Playwright). Böylece telefon numarası PDF'e hiç girmez ve site ile CV hep tutarlıdır. | Telefon yasağı + tek kaynak ilkesi | Kullanıcı hazır PDF verirse D-10 S'ye iner; telefonsuz olduğu elle kontrol edilir |
 | V-06 | Hero ve hakkımda için **iki ayrı fotoğraf dosyası** kullanılır (GK-03). Talha tek fotoğraf verirse iki farklı kırpım (hero dikey portre, hakkımda yatay / daha geniş) kullanılır. | Aynı görsel iki rolde kullanılmaz | Yalnızca dosyalar |
-| V-07 | Canlı adresi olmayan ya da iframe izni olmayan projelerde önizleme yerine ekran görüntüsü galerisi gösterilir. **Canlı adresi olmayan 8 projede yalnızca Talha'nın verdiği, hassas verisi gizlenmiş görseller kullanılır (Q-04); bu projeler için otomatik çekim yapılmaz.** Görseller gelene kadar yer tutucu. | Önizleme her projede mümkün değil | Veri dosyasında `preview.mode` |
+| V-07 | Canlı adresi olmayan ya da iframe izni olmayan projelerde önizleme yerine ekran görüntüsü galerisi gösterilir. **Canlı adresi olmayan 7 projede yalnızca Talha'nın verdiği, hassas verisi gizlenmiş görseller kullanılır (Q-04); bu projeler için otomatik çekim yapılmaz.** Görseller gelene kadar yer tutucu. | Önizleme her projede mümkün değil | Veri dosyasında `preview.mode` |
 | V-08 | Depo açık (kaynak kodun kendisi bir kanıt). | İşverene kod kalitesi gösterilir | Gizli olursa yalnızca README bağlantısı kalkar |
 | V-09 | Butik otel (akademik) ve iki geliştirme aşamasındaki proje (Ritim, FestOS) listede yer alır, öne çıkanlarda yer almaz. | Durum etiketleri dürüst kalsın | Veri dosyasında `featured` |
 
@@ -204,8 +204,8 @@ Ayrıntı: [docs/arastirma.md](docs/arastirma.md)
 
 | Değişken | Örnek | Ne için |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://<ad-soyad>.vercel.app` → ileride `https://<alan-adi>` | **Tek kanonik adres:** canonical, `hreflang`, sitemap, OG, JSON-LD, CV PDF'teki bağlantı. Taşımada yalnızca bu değişir. |
-| `PORTFOLIO_ORIGINS` | `https://<ad-soyad>.vercel.app https://<alan-adi>` | Portfolyonun yayınlandığı **bütün** kökenler (boşlukla ayrılmış). `embed:check` her birini denetler. |
+| `NEXT_PUBLIC_SITE_URL` | `https://talha-keskin.vercel.app` → ileride `https://<alan-adi>` | **Tek kanonik adres:** canonical, `hreflang`, sitemap, OG, JSON-LD, CV PDF'teki bağlantı. Taşımada yalnızca bu değişir. |
+| `PORTFOLIO_ORIGINS` | `https://talha-keskin.vercel.app https://<alan-adi>` | Portfolyonun yayınlandığı **bütün** kökenler (boşlukla ayrılmış). `embed:check` her birini denetler. |
 
 Kod adresi yalnızca `src/config/site.ts` üzerinden okur; başka yerde adres yazılmaz (test: kaynakta `vercel.app` geçen tek yer `.env.example`).
 
@@ -313,8 +313,8 @@ Veritabanı yok. Veri dosyaları (`content/*.ts`), Zod şemasıyla derleme anın
 
 | No | Parametre | Varsayılan | Nerede |
 |---|---|---|---|
-| P-01 | Kanonik site adresi | `https://<ad-soyad>.vercel.app` | `NEXT_PUBLIC_SITE_URL` → `src/config/site.ts` |
-| P-06 | Portfolyonun yayın kökenleri | `https://<ad-soyad>.vercel.app` (+ ileride alan adı) | `PORTFOLIO_ORIGINS` (bu depo ve her proje deposu) |
+| P-01 | Kanonik site adresi | `https://talha-keskin.vercel.app` | `NEXT_PUBLIC_SITE_URL` → `src/config/site.ts` |
+| P-06 | Portfolyonun yayın kökenleri | `https://talha-keskin.vercel.app` (+ ileride alan adı) | `PORTFOLIO_ORIGINS` (bu depo ve her proje deposu) |
 | P-02 | Önizleme zaman aşımı | 10 sn | `config/preview.ts` |
 | P-03 | Masaüstü önizleme çizim genişliği | 1280 px | `config/preview.ts` |
 | P-04 | Dil çerezi ömrü | 365 gün | `i18n/routing.ts` |
@@ -406,7 +406,7 @@ Kontrastlar 2026-11-27'de WCAG formülüyle hesaplandı ve axe ile doğrulandı.
 |---|---|
 | Fotoğraf karakteri | Sade, açık nötr zemin, yumuşak gün ışığı, belden yukarı; renk sıcaklığı kâğıt zemine uyumlu (sıcak nötr) |
 | Kaynak | Talha'nın kendi fotoğrafı (şimdilik yer tutucu) + projelerin gerçek ekran görüntüleri. Stok yok |
-| Ekran görüntüsü üretimi | `pnpm screenshots:projects`: canlı 7 proje için Playwright ile 1440 × 900 ve 390 × 844 (var olan dosyanın üstüne yazmaz). Canlı adresi olmayan 8 proje için yalnızca Talha'nın verdiği, hassas verisi gizlenmiş görseller ([docs/proje-gorselleri.md](docs/proje-gorselleri.md)) |
+| Ekran görüntüsü üretimi | `pnpm screenshots:projects`: canlı 8 proje için Playwright ile 1440 × 900 ve 390 × 844 (var olan dosyanın üstüne yazmaz). Canlı adresi olmayan 7 proje için yalnızca Talha'nın verdiği, hassas verisi gizlenmiş görseller ([docs/proje-gorselleri.md](docs/proje-gorselleri.md)) |
 | İhtiyaç listesi | Profil hero 1 · 4:5 · ≥ 1600 × 2000; profil hakkımda 1 · 3:2 · ≥ 1800 × 1200; proje kapak 15 · 16:10 · ≥ 2400 × 1500 (@2x); proje galerisi 3–6 / proje |
 | Teslim | `next/image` (derleme anında türev, Vercel görüntü optimizasyonu) |
 | İkon seti | lucide, çizgi kalınlığı 1,5 |
@@ -510,7 +510,7 @@ Kapılar: `docs/kalite-kapilari.md` (Faz 3'te S2'ye göre işaretlenir).
 |---|---|
 | Ortamlar | Yerel · Önizleme (Vercel, her PR) · Üretim |
 | Barındırma planı | Vercel Hobby (kişisel, ticari olmayan site) |
-| Alan adı | Q-01 |
+| Alan adı | `talha-keskin.vercel.app` (Vercel projesi `talha-keskin`, ekip `talha-keskin`); özel alan adı sonra (K-21) |
 | İzleme | Vercel; harici uptime (UptimeRobot, ücretsiz) |
 | Yedek | Git deposu (veritabanı yok) |
 | Zamanlanmış işler | Yok. Haftalık `embed:check` GitHub Actions'ta (uyarı) |
@@ -537,7 +537,7 @@ Kapsam dışı maddeler [belgenin sonunda](#kapsam-dışı).
 
 | No | Risk | Etki | Önlem |
 |---|---|---|---|
-| RSK-01 | 7 canlı projeden 6'sı iframe'i engelliyor | İmza özellik boş kalır | Kontrol listesi hazır ([docs/onizleme-izinleri.md](docs/onizleme-izinleri.md)); her projede `frame-ancestors 'self' ${PORTFOLIO_ORIGINS}`; yapılana kadar ekran görüntüsü galerisi (V-07) |
+| RSK-01 | ~~7 canlı projeden 6'sı iframe'i engelliyor~~ → 2026-11-28: 7 / 8 canlıda izin verildi (K-23); Golden Börek sunucu yayını bekliyor | İmza özellik boş kalır | Kontrol listesi hazır ([docs/onizleme-izinleri.md](docs/onizleme-izinleri.md)); her projede `frame-ancestors 'self' ${PORTFOLIO_ORIGINS}`; yapılana kadar ekran görüntüsü galerisi (V-07) |
 | RSK-08 | Önizlemede üçüncü taraf çerezleri engellendiği için iframe içinde giriş (panel) çalışmaz | Panel önizlemesi yok | Beklenen davranış; vitrin sayfaları önizlenir, panel ekranları galeride (Kapsam Dışı) |
 | RSK-09 | Portfolyonun PR önizleme adresleri (`*-git-*.vercel.app`) izin listesinde değil | PR önizlemesinde iframe yerine hata durumu | Bilerek böyle: `*.vercel.app` jokeri herkese izin verir. PR'da yedek galeri test edilir |
 | RSK-02 | Önizlemedeki siteler değişir ya da kapanır | Kırık önizleme | Haftalık `embed:check`; 10 sn zaman aşımı ve hata durumu |
@@ -548,12 +548,12 @@ Kapsam dışı maddeler [belgenin sonunda](#kapsam-dışı).
 | RSK-07 | Efor bütçesi tam dolu (30 / 30) | Taşma | Cila ve müsaitlik (P1) ilk kesilecekler |
 
 **Açık sorular:**
-- [x] Q-01 Alan adı → Şimdilik `https://<ad-soyad>.vercel.app`; tek değişkende (K-11).
+- [x] Q-01 Alan adı → Şimdilik `https://talha-keskin.vercel.app`; tek değişkende (K-11).
 - [x] Q-02 Çelişkiler → EduNex PostgreSQL + JWT + 4 kişilik ekip liderliği doğru; Acutus'ta Demucs var; 2024–2026 mezun (K-12).
 - [x] Q-03 Golden Börek → İşletme onayı var (K-13).
 - [x] Q-04 Görseller → Talha'da var, gizlenmiş; klasör kuralına göre yerleştirecek, o zamana kadar yer tutucu (K-15).
 - [x] Q-05 Konsept → "Şartname kâğıdı" (K-14).
-- [ ] Q-06 Vercel proje adı kesinleşince `<ad-soyad>` yerine gerçek adres `.env` ve kontrol listesine yazılacak.
+- [x] Q-06 Adres → `https://talha-keskin.vercel.app` (K-21).
 
 ## 23. İlerleme ve karar günlüğü
 
@@ -581,6 +581,10 @@ Kapsam dışı maddeler [belgenin sonunda](#kapsam-dışı).
 | K-18 | 2026-11-27 | Lighthouse CI 0.15.1 + `overrides` (tmp, uuid, basic-ftp, zod) + `extract-zip` için gerekçeli audit istisnası (2027-01-31'de gözden geçir) | 0.16.1 kurulamıyor (kayıtta olmayan `devtools-protocol` sürümü); açıklar yalnızca geliştirme aracında |
 | K-19 | 2026-11-27 | Önizleme / yerel derlemeler `noindex`, yalnızca `VERCEL_ENV=production` indekslenir; `/stil` üretimde 404 | `DEMO_MODE` yerine (gerçek içerik, demo değil) |
 | K-20 | 2026-11-27 | Telefon numarası depoda hiçbir dosyada yok: kaynak CV / portfolyo dosyaları `.gitignore`'da (yalnızca yerelde); `docs/standartlar/`, `.claude/rules/`, AGENTS.md ve yasal şablon kopyalarında numara maskelendi (kopyalarda başka değişiklik yok) | BR-ICR-001; depo açık (V-08) |
+| K-21 | 2026-11-28 | Yayın: GitHub `htalhakeskin-lgtm/talha-keskin-site` (açık) + Vercel `talha-keskin` (fra1, Node 24, Next.js ön ayarı) → `https://talha-keskin.vercel.app`; `main` kural setiyle korumalı (PR + `static`/`e2e`/`security` zorunlu, squash, force push yok) | Q-06; 15-git-ve-ci |
+| K-22 | 2026-11-28 | Levha'nın canlı adresi var: `levha-dovme-piercing.vercel.app` → canlı proje 8, canlı adresi olmayan 7 (V-07 güncellendi) | Vercel proje listesi |
+| K-23 | 2026-11-28 | Önizleme izinleri 7 projede birleştirildi ve 6'sı canlıda doğrulandı (Golden Börek sunucu yayını bekliyor); VetFlow'a dokunulmadı | docs/onizleme-izinleri.md |
+| K-24 | 2026-11-28 | Playwright ve Lighthouse CI sunucuyu `node node_modules/next/dist/bin/next` ile başlatır | pnpm 12 SIGTERM'i iletmiyor; CI testler bitince 20 dk asılı kaldı |
 
 **Değişiklik kaydı:**
 
@@ -589,6 +593,7 @@ Kapsam dışı maddeler [belgenin sonunda](#kapsam-dışı).
 | 2026-11-27 | v0.1 | İlk plan |
 | 2026-11-27 | v0.2 | Q-01…Q-05 cevapları işlendi; §5.5 adres ve önizleme izinleri, §5.6 proje görselleri eklendi; RSK-08, RSK-09; K-11…K-15 |
 | 2026-11-27 | v0.3 | Onaylandı; Faz 3 kararları K-16…K-19; ölçülen kontrastlar ve JS tabanı |
+| 2026-11-28 | v0.4 | Yayın ve önizleme izinleri: K-21…K-24; Q-06 kapandı |
 
 ---
 

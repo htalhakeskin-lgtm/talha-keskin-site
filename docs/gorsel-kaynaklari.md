@@ -25,7 +25,7 @@
 
 ## Proje ekran görüntüleri
 
-[docs/proje-gorselleri.md](proje-gorselleri.md) kuralına göre `public/projects/<slug>/`. Kaynak: canlı 7 proje için otomatik çekim (D-09), diğer 8 proje için Talha'nın verdiği, hassas verisi gizlenmiş görseller (K-15). Her dosya yerleşince bu tabloya eklenir.
+[docs/proje-gorselleri.md](proje-gorselleri.md) kuralına göre `public/projects/<slug>/`. Kaynak: canlı 8 proje için otomatik çekim (D-09), diğer 7 proje için Talha'nın verdiği, hassas verisi gizlenmiş görseller (K-15). Her dosya yerleşince bu tabloya eklenir.
 
 | Proje | Dosyalar | Kaynak | Tarih |
 |---|---|---|---|

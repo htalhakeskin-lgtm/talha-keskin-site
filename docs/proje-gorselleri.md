@@ -27,7 +27,7 @@ Klasörleri şimdi oluşturup görselleri yerleştirebilirsin; kurulum sırasın
 | REVNAK | `revnak` | Otomatik çekim |
 | VetFlow | `vetflow` | Otomatik çekim |
 | Nail Art Studios | `nail-art-studios` | Otomatik çekim |
-| Levha | `levha` | **Yalnızca senin gizlenmiş görsellerin** |
+| Levha | `levha` | Otomatik çekim (canlı: levha-dovme-piercing.vercel.app) + istersen senin görsellerin |
 | Diyetisyen sitesi | `diyetisyen` | Otomatik çekim |
 | Butik otel | `butik-otel` | **Yalnızca senin gizlenmiş görsellerin** |
 | NK Nakliye | `nk-nakliye` | **Yalnızca senin gizlenmiş görsellerin** |

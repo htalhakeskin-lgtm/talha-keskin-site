@@ -13,7 +13,7 @@
 Sonuç böyle görünmeli:
 
 ```
-Content-Security-Policy: ...; frame-ancestors 'self' https://<ad-soyad>.vercel.app
+Content-Security-Policy: ...; frame-ancestors 'self' https://talha-keskin.vercel.app
 ```
 
 > `frame-ancestors` yalnızca **sitenin kimin içinde gösterilebileceğini** belirler. Başka hiçbir siteye izin verilmez; tıklama tuzağına (clickjacking) karşı koruma sürer. `*` ya da `https://*.vercel.app` **yazma**: Vercel'deki herkese izin verir.
@@ -26,9 +26,9 @@ Vercel → Proje → **Settings → Environment Variables**:
 
 | Key | Value | Environments |
 |---|---|---|
-| `PORTFOLIO_ORIGINS` | `https://<ad-soyad>.vercel.app` | Production, Preview |
+| `PORTFOLIO_ORIGINS` | `https://talha-keskin.vercel.app` | Production, Preview |
 
-Alan adı alınca değer `https://<ad-soyad>.vercel.app https://<alan-adi>` olur. Değişken değişince proje **yeniden yayınlanmalı**: Deployments → son yayın → ⋯ → Redeploy.
+Alan adı alınca değer `https://talha-keskin.vercel.app https://<alan-adi>` olur. Değişken değişince proje **yeniden yayınlanmalı**: Deployments → son yayın → ⋯ → Redeploy.
 
 ## 1. Başlık nerede ayarlanıyor? (her projede önce bunu çalıştır)
 
@@ -88,7 +88,7 @@ Nginx'ten geliyorsa:
 
 ```nginx
 # server { ... } bloğunda, adres listesi TEK yerde:
-set $portfolio_origins "https://<ad-soyad>.vercel.app";
+set $portfolio_origins "https://talha-keskin.vercel.app";
 
 # SİL:
 # add_header X-Frame-Options "DENY" always;
@@ -110,7 +110,7 @@ Sonra `sudo nginx -t && sudo systemctl reload nginx`.
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://<ad-soyad>.vercel.app" }
+        { "key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://talha-keskin.vercel.app" }
       ]
     }
   ]
@@ -127,15 +127,20 @@ header("Content-Security-Policy: frame-ancestors 'self' " . (getenv('PORTFOLIO_O
 
 ## Proje proje kontrol listesi
 
-| ✓ | Proje | Adres | Şu anki başlık | Muhtemel kalıp | Yapılacak |
-|---|---|---|---|---|---|
-| [ ] | Golden Börekçilik | goldenborek.com | `X-Frame-Options: DENY` + CSP `frame-ancestors 'none'` | A / B ya da C (Docker + Nginx) | XFO'yu sil, `'none'` → `'self' ${PORTFOLIO_ORIGINS}`. Sunucuda `PORTFOLIO_ORIGINS`'i `.env` / compose dosyasına ekle |
-| [ ] | REVNAK | revnak-gayrimenkul.vercel.app | `X-Frame-Options: SAMEORIGIN`, CSP yok | A (2b) | XFO'yu sil, yalnızca `frame-ancestors` içeren CSP ekle |
-| [ ] | VetFlow | veteriner-site-web.vercel.app | Başlık yok, **herkes çerçeveleyebiliyor** | D | Önizleme zaten açılıyor. Öneri: D ile `frame-ancestors`'u portfolyoyla sınırla (şu an tıklama tuzağına açık) |
-| [ ] | Nail Art Studios | bahadirkarasu-nails.vercel.app | `X-Frame-Options: DENY` + CSP `frame-ancestors 'none'` | A | XFO'yu sil, `'none'` → değişken |
-| [ ] | Diyetisyen | bionluk-diyetisyen-web-sitesi.vercel.app | `X-Frame-Options: DENY`, CSP yok | D (`vercel.json` ya da PHP `header()`) | XFO'yu sil, CSP ekle |
-| [ ] | Bütçe | butce-demo.vercel.app | `X-Frame-Options: DENY` + nonce'lu CSP `frame-ancestors 'none'`; kök `/` 307 ile yönleniyor | B | XFO'yu sil, CSP'de değişken. Not: önizleme yönlenen sayfayı (giriş / tanıtım) gösterir; vitrin sayfası varsa veri dosyasında önizleme adresi olarak o verilir |
-| [ ] | Kartela | kartela-jade.vercel.app | `X-Frame-Options: DENY` + CSP `frame-ancestors 'none'` | A | XFO'yu sil, `'none'` → değişken. CSP'deki `frame-src 'none'` kalabilir (Kartela'nın kendi içine gömdüğü şeylerle ilgili) |
+> **Durum (2026-11-28):** Değişiklikler her depoda PR olarak birleştirildi; Vercel projelerine `PORTFOLIO_ORIGINS=https://talha-keskin.vercel.app` (Production + Preview) eklendi. "Canlıda" sütunu `curl -I` ile doğrulandı.
+
+| ✓ | Proje | Adres | Önce | Kalıp | PR | Canlıda |
+|---|---|---|---|---|---|---|
+| [~] | Golden Börekçilik | goldenborek.com | XFO `DENY` + `frame-ancestors 'none'` | A (liste `src/config/portfolio.ts`; Docker imajı) | [#141](https://github.com/htalhakeskin-lgtm/golden-borekcilik/pull/141) ✅ | ⏳ **Sunucuya yayın bekliyor:** imaj Actions'ta derlenir (özel depo; Actions fatura sorunu yüzünden duruyor), ardından sunucuda `deploy.sh` |
+| [x] | REVNAK | revnak-gayrimenkul.vercel.app | XFO `SAMEORIGIN`, CSP yok | A (2b) + `/panel` `'none'` | [#1](https://github.com/htalhakeskin-lgtm/revnak-gayrimenkul/pull/1) ✅ | ✅ CLI ile yayınlandı (Vercel ↔ Git bağlı değil) |
+| [ ] | VetFlow | veteriner-site-web.vercel.app | Başlık yok (herkes çerçeveleyebilir) | — | — | Önizleme zaten açılıyor. **Değiştirilmedi:** `apps/web/vercel.json` eski `routes` biçiminde; `headers` ile birlikte kullanılamaz, sıkılaştırma yönlendirmeyi değiştirmeyi gerektirir (öneri olarak açık) |
+| [x] | Nail Art Studios | bahadirkarasu-nails.vercel.app | XFO `DENY` + `'none'` | A | [#29](https://github.com/htalhakeskin-lgtm/nail-art-studio/pull/29) ✅ | ✅ |
+| [x] | Diyetisyen | bionluk-diyetisyen-web-sitesi.vercel.app | XFO `DENY` | D (`vercel.json`, liste bu dosyada) | [#1](https://github.com/htalhakeskin-lgtm/bionluk-diyetisyen-web-sitesi/pull/1) ✅ | ✅ CLI ile yayınlandı; yerelde kalmış alt bilgi imzası da depoya işlendi |
+| [x] | Bütçe | butce-demo.vercel.app | XFO `DENY` + nonce'lu `'none'` | B (bütün uygulama) | [#13](https://github.com/htalhakeskin-lgtm/butce-ve-harcama-takip/pull/13) ✅ | ✅ CLI ile yayınlandı; kök `/login`'e yönlenir |
+| [x] | Kartela | kartela-jade.vercel.app · rakim-kahve.vercel.app | XFO `DENY` + `'none'` | A | [#34](https://github.com/htalhakeskin-lgtm/kartela-qr-menu/pull/34) ✅ | ✅ (Vercel'deki son üretim adı `rakim-kahve.vercel.app`) |
+| [x] | Levha | levha-dovme-piercing.vercel.app | XFO `DENY` + `'none'` | A | [#45](https://github.com/htalhakeskin-lgtm/levha-dovme-piercing/pull/45) ✅ | ✅ (planda canlı adresi yok sanılıyordu, K-22) |
+
+Paneller (`/panel`, `/hesabim`, REVNAK ofis paneli) her projede `frame-ancestors 'none'` olarak kaldı.
 
 ## Doğrulama
 
@@ -151,7 +156,7 @@ PowerShell:
 (Invoke-WebRequest -Method Head -Uri https://goldenborek.com).Headers["Content-Security-Policy"]
 ```
 
-**Beklenen:** `X-Frame-Options` satırı **yok**, CSP içinde `frame-ancestors 'self' https://<ad-soyad>.vercel.app` var.
+**Beklenen:** `X-Frame-Options` satırı **yok**, CSP içinde `frame-ancestors 'self' https://talha-keskin.vercel.app` var.
 
 Portfolyo kurulduktan sonra tek komut hepsini denetler: `pnpm embed:check`. Bu komut her proje × her portfolyo adresi için ✅ / ❌ tablosu verir.
 
@@ -159,7 +164,7 @@ Portfolyo kurulduktan sonra tek komut hepsini denetler: `pnpm embed:check`. Bu k
 
 1. **Portfolyo** (Vercel ayarları):
    - `NEXT_PUBLIC_SITE_URL=https://<alan-adi>`
-   - `PORTFOLIO_ORIGINS=https://<ad-soyad>.vercel.app https://<alan-adi>`. Eski adres de yayında kaldığı için listede durur.
+   - `PORTFOLIO_ORIGINS=https://talha-keskin.vercel.app https://<alan-adi>`. Eski adres de yayında kaldığı için listede durur.
 2. **Her proje:**
    - A / B kalıbındaki projelerde `PORTFOLIO_ORIGINS`'e yeni adresi ekle ve Redeploy et.
    - C ve D kalıbındaki projelerde tek satırı düzenle.

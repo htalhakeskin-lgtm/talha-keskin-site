@@ -1,6 +1,6 @@
 # Talha Keskin · Kişisel Portfolyo
 
-Hasan Talha Keskin'in iki dilli (TR / EN) dijital CV'si: kariyer hikâyesi, projeler ve site içinde canlı önizleme. **Canlı:** `https://<ad-soyad>.vercel.app` (yayından sonra güncellenir)
+Hasan Talha Keskin'in iki dilli (TR / EN) dijital CV'si: kariyer hikâyesi, projeler ve site içinde canlı önizleme. **Canlı:** https://talha-keskin.vercel.app
 
 ## English summary
 

@@ -6,7 +6,8 @@
 
 - **Etkin dilim:** — (D-02 sırada)
 - **Son yapılan:** Faz 3 kurulumu: Next.js 16.4.6 iskeleti, "Şartname kâğıdı" token'ları + IBM Plex, kabuk (başlık, JS'siz mobil menü, iletişim alt bilgisi + imza), 404, `/stil`, robots / sitemap / manifest / OG / favicon, güvenlik başlıkları, CI, sistem dosyaları, ADR-0001. Yerelde check + build + e2e (57 ✓) + Lighthouse + audit yeşil.
-- **Sıradaki adım:** `/web-proje devam` → D-02 çok dilli altyapı (next-intl, `/tr` `/en`, dil seçici, `NEXT_LOCALE`). Talha: Vercel projesini bağla, ilk commit'i GitHub'a gönder.
+- **Sıradaki adım:** `/web-proje devam` → D-02 çok dilli altyapı (next-intl, `/tr` `/en`, dil seçici, `NEXT_LOCALE`).
+- **Yayın (2026-11-28):** https://talha-keskin.vercel.app · GitHub CI yeşil · `main` korumalı (K-21). Önizleme izinleri: 6 / 7 canlıda (K-23).
 
 ## Gözetimsiz çalışma notları
 
@@ -67,11 +68,14 @@ Efor: P0 29 + P1 1 = 30 / 30.
 | Grup | Sonuç | Not |
 |---|---|---|
 | Faz 3 çıkış | ✅ (yerel) | `pnpm check` ✓ (9 birim testi) · `pnpm build` ✓ (tüm rotalar statik) · `pnpm test:e2e` 57 ✓ / 9 atlandı (tek koşan testler) · Lighthouse `/`: Perf 0,94 · A11y 1 · BP 1 (SEO 0,66 = noindex, beklenen) · `pnpm audit` temiz (2 gerekçeli istisna, K-18) · ilk yük JS tabanı 175 KB |
-| Faz 3 çıkış | ⏳ | Vercel önizleme adresi ve GitHub'da CI: depo uzak sunucuya henüz gönderilmedi |
+| Faz 3 çıkış | ✅ (2026-11-28) | GitHub CI yeşil (static · e2e + Lighthouse · security); Vercel üretim `talha-keskin.vercel.app` 200, `index, follow`, `/stil` 404, güvenlik başlıkları canlıda |
 
 ## Bilinen sorunlar
 
-- 6/7 canlı proje iframe'i engelliyor (RSK-01). Talha [onizleme-izinleri.md](onizleme-izinleri.md)'ye göre proje depolarında düzeltecek; D-09'daki `embed:check` doğrular.
+- Golden Börek'in başlık değişikliği `main`'de (#141) ama canlıda değil: imaj GitHub Actions'ta derleniyor ve özel depolarda Actions **ödeme / harcama limiti** yüzünden çalışmıyor; ardından sunucuda `deploy.sh` gerekiyor.
+- GitHub Actions özel depolarda (golden-borekcilik, levha-dovme-piercing, …) fatura sorunu yüzünden hiç başlamıyor; Levha PR'ı yerel lint / tip / biçim / başlık değerlendirmesiyle birleştirildi.
+- Bütçe deposunun PR iş akışında e2e 2 Kasım'dan beri her seferinde iptal (muhtemelen aynı pnpm sinyal sorunu, K-24); düzeltme önerisi açık.
+- Bütçe yerel kopyasında gönderilmemiş bir docs commit'i (`778b4ac`) ve çakışan yerel docs değişiklikleri var; yerel kopyaya dokunulmadı.
 - VetFlow'da `frame-ancestors` yok: herkes çerçeveleyebiliyor (tıklama tuzağı). Kontrol listesinde sıkılaştırma önerildi.
 - Lighthouse mobil LCP 2,9 sn (hedef < 2,5). Kabukta LCP öğesi hero metni, gecikme yazı tipi yüklemesinden. D-05'te hero görseliyle yeniden ölçülecek; gerekirse yazı ağırlıkları azaltılır.
 
@@ -83,3 +87,8 @@ Efor: P0 29 + P1 1 = 30 / 30.
 - 2026-11-27 · Faz 3 · Erişilebilirlik testi sr-only "İçeriğe geç" bağlantısını 1 px hedef sayıyor → kısayol bağlantısı tam boyutta, ekranın üstüne kaydırılarak gizlenmeli (iskelet kök yerleşim örneği).
 - 2026-11-27 · Faz 3 · Plan aşamasında hesaplanan vurgu kontrastı yalnızca ana zemine göreydi; ikincil zeminde AA altına düştü → plan §11.2 kontrastları **her yüzey zeminine** göre yazılmalı (20-gorsel-kalite §2).
 - 2026-11-27 · Faz 3 · Yerelde 3000 portu başka uygulamadayken Playwright `reuseExistingServer` ve Lighthouse yanlış uygulamayı ölçebilirdi → iskelette port ayarlanabilir olmalı (`E2E_BASE_URL`'den port, `LHCI_PORT`).
+- 2026-11-28 · Yayın · pnpm 12, `pnpm start` ile başlatılan Next sunucusuna SIGTERM iletmiyor; Playwright testleri bitirdi ama sunucu kapanmadığı için CI işi zaman aşımına kadar asılı kaldı → iskelet `playwright.config.ts` ve `lighthouserc.js` sunucuyu `node node_modules/next/dist/bin/next` ile başlatmalı + CI'da `list` raporlayıcısı ve adım zaman aşımı (iskelet/README §3).
+- 2026-11-28 · Yayın · İskeletin `protect-main.sh` kancası boş depoya ilk `main` gönderimini de reddediyor → yalnızca uzak `main` yokken (sıfır SHA) izin veren istisna eklendi; iskelete taşınmalı.
+- 2026-11-28 · Yayın · `vercel deploy`, git'in izlemediği ama `.gitignore`'da da olmayan dosyaları yükler: doğrulama için klonda `pnpm install` çalıştırınca oluşan `pnpm-lock.yaml` npm projesini pnpm ile derletti ve derleme düştü → CLI yayını her zaman hiçbir şey kurulmamış, temiz bir klondan yapılmalı.
+- 2026-11-28 · Yayın · CLI ile yayınlanan projelerde canlı sürüm commit edilmemiş değişiklik içerebilir (Diyetisyen'de imza) → temiz klondan yayından önce canlı çıktı ile depo karşılaştırılmalı.
+- 2026-11-28 · Yayın · Vercel yeni projede çerçeveyi "Other" ve Node 26 seçebiliyor → iskelete `vercel.json` (`framework`, `regions`) ve `engines.node` eklenmeli.
